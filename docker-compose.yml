@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: ["${POSTGRES_PORT}:5432"]
+    volumes: ["./docker-data/pg:/var/lib/postgresql/data"]
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports: ["${QDRANT_PORT}:6333"]
+    volumes: ["./docker-data/qdrant:/qdrant/storage"]
