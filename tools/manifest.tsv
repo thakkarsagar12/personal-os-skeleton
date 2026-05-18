@@ -1,0 +1,4 @@
+system/db/startup.sh	system/db/startup.sh	scrub
+system/db/memory.py	system/db/memory.py	scrub
+system/db/repo_index.py	system/db/repo_index.py	scrub
+system/db/bridge.py	system/db/bridge.py	scrub
