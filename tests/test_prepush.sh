@@ -28,6 +28,12 @@ if [ -f "$_SKEL_ROOT/.githooks/pre-push" ]; then
   cp "$_SKEL_ROOT/.githooks/pre-push" "$_CLONE/.githooks/pre-push"
 fi
 
+# The hook calls make-shareable.sh -> scan-core.sh with the DEFAULT
+# identifier path. Add a SYNTHETIC token to the temp clone's
+# scripts/identifiers.txt (this file lives only in the temp clone,
+# never in the skeleton tree) so the hook catches our fixture token.
+echo "FIXTUREPII" > "$_CLONE/scripts/identifiers.txt"
+
 # Point git at the hooks dir and the bare remote
 git -C "$_CLONE" config core.hooksPath .githooks
 git -C "$_CLONE" remote add origin "$_BARE"
@@ -38,8 +44,8 @@ git -C "$_CLONE" add README.md
 git -C "$_CLONE" commit -q -m "clean commit"
 assert_ok git -C "$_CLONE" push -q origin HEAD
 
-# --- Test B: file containing PII is blocked by the pre-push hook ---
-echo "Sagar NeoSoft employee record" > "$_CLONE/private.md"
+# --- Test B: file containing synthetic PII is blocked by the pre-push hook ---
+echo "FIXTUREPII synthetic employee record" > "$_CLONE/private.md"
 git -C "$_CLONE" add private.md
 git -C "$_CLONE" commit -q -m "dirty commit"
 assert_err git -C "$_CLONE" push -q origin HEAD

@@ -1,0 +1,4 @@
+# Test-only identifiers. Synthetic — never real PII.
+FIXTUREPII
+fixture@example\.test
+[0-9]{10}
