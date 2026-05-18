@@ -7,7 +7,7 @@ def reachable(host, port):
     try:
         with socket.create_connection((host, int(port)), timeout=2):
             return True
-    except (OSError, ValueError, TypeError):
+    except (OSError, ValueError, TypeError, OverflowError):
         return False
 
 
