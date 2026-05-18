@@ -11,8 +11,8 @@ fi
 cat <<'MSG'
 
 BLOCKED. Personal data or denylisted paths detected above.
-Edit scripts/identifiers.txt for YOUR identifiers, remove the
-flagged content, and never commit docker-data/ or memory/.
-See PRIVACY.md.
+Remove the flagged content from your files, or if this is a known-safe
+pattern, update scripts/identifiers.txt. Never commit docker-data/ or
+memory/. See PRIVACY.md.
 MSG
 exit 1

@@ -25,8 +25,10 @@ pat="$(grep -vE '^\s*#|^\s*$' "$IDF" | paste -sd'|' -)"
 if [ -n "$pat" ]; then
   if grep -rnE "$pat" "$ROOT" \
        --exclude-dir=.git --exclude-dir=docker-data --exclude-dir=__pycache__ \
-       --exclude='identifiers.txt' --exclude='identifiers.example.txt' \
-       2>/dev/null | grep . ; then
+       --exclude='identifiers.example.txt' \
+       2>/dev/null \
+     | grep -vF -- "$IDF" \
+     | grep . ; then
     echo "IDENTIFIER HIT (above)"; rc=1
   fi
 fi

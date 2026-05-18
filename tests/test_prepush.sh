@@ -50,5 +50,17 @@ git -C "$_CLONE" add private.md
 git -C "$_CLONE" commit -q -m "dirty commit"
 assert_err git -C "$_CLONE" push -q origin HEAD
 
+# --- Test C: hook fails CLOSED when the scanner script is absent ---
+# Remove the dirty file first so the ONLY factor under test is the
+# missing scanner, then delete make-shareable.sh. The hook execs a
+# now-missing file -> non-zero exit -> push must still be blocked.
+git -C "$_CLONE" rm -q private.md
+git -C "$_CLONE" commit -q -m "drop dirty file"
+rm "$_CLONE/scripts/make-shareable.sh"
+echo "scanner intentionally removed" >> "$_CLONE/README.md"
+git -C "$_CLONE" add README.md
+git -C "$_CLONE" commit -q -m "hook script removed"
+assert_err git -C "$_CLONE" push -q origin HEAD
+
 # Cleanup
 rm -rf "$_TMP_PP"

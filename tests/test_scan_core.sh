@@ -20,14 +20,23 @@ assert_err bash "$SC" "$TMP/bin" "$IDS"
 mkdir -p "$TMP/phone"; printf 'call 99999%s today\n' '99999' > "$TMP/phone/a.md"
 assert_err bash "$SC" "$TMP/phone" "$IDS"
 
-# Regression: scan-core must NOT flag the active identifier file itself.
+# Regression: scan-core must NOT flag the ACTIVE identifier file itself.
 # (An adopter who edits scripts/identifiers.txt must not have that file
-#  self-match on every scan. identifiers.txt + identifiers.example.txt
-#  are both --exclude'd from the content grep.)
+#  self-match on every scan. The active IDF is path-precisely suppressed
+#  via `grep -vF -- "$IDF"`, NOT a broad basename --exclude.)
 mkdir -p "$TMP/idfself/scripts"
 echo "FIXTUREPII" > "$TMP/idfself/scripts/identifiers.txt"
 echo "generic note, nothing personal" > "$TMP/idfself/other.md"
 assert_ok bash "$SC" "$TMP/idfself" "$TMP/idfself/scripts/identifiers.txt"
+
+# Regression (broad-exclude hole): a DIFFERENTLY-located file that merely
+# happens to be NAMED identifiers.txt — but is NOT the active IDF — must
+# still be scanned. A broad `--exclude='identifiers.txt'` would silently
+# skip it and hide PII (hook fails open). Active IDF here is the unrelated
+# test-identifiers.txt, so this nested identifiers.txt is just content.
+mkdir -p "$TMP/broad/sub"
+echo "FIXTUREPII" > "$TMP/broad/sub/identifiers.txt"
+assert_err bash "$SC" "$TMP/broad" "$IDS"
 
 # Cleanup: remove fixture artifacts (runtime files hold the full synthetic
 # 10-digit string; leaving them on disk would trip a later whole-repo scan).
