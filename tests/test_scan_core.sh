@@ -1,0 +1,8 @@
+TMP="$(dirname "$0")/.tmp"; rm -rf "$TMP"; mkdir -p "$TMP/clean" "$TMP/dirty"
+echo "generic note, no personal data" > "$TMP/clean/a.md"
+echo "Sagar Prez NeoSoft thakkarsagar12@gmail.com" > "$TMP/dirty/a.md"
+SC="$(dirname "$0")/../scripts/scan-core.sh"
+assert_ok  bash "$SC" "$TMP/clean"
+assert_err bash "$SC" "$TMP/dirty"
+mkdir -p "$TMP/deny/docker-data"; echo x > "$TMP/deny/docker-data/db"
+assert_err bash "$SC" "$TMP/deny"

@@ -1,0 +1,9 @@
+# One regex per line. Lines starting with # ignored.
+# Replace these with YOUR identifiers before sharing.
+Sagar
+Prez
+Bhumi
+NeoSoft
+thakkarsagar12@gmail\.com
+\b\d{10}\b
+ADHD|BPD

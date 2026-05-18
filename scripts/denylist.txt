@@ -1,0 +1,7 @@
+docker-data/
+memory/
+.env
+*.log
+**/personal-sessions/**
+**/secrets/**
+**/vault/**

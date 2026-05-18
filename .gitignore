@@ -1,0 +1,8 @@
+.env
+docker-data/
+memory/
+*.log
+.DS_Store
+__pycache__/
+*.pyc
+tests/.tmp/
