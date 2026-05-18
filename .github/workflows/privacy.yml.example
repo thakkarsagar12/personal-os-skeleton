@@ -1,0 +1,10 @@
+# Rename to privacy.yml to activate. Opt-in by design.
+name: privacy-scan
+on: [push, pull_request]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PII / denylist scan
+        run: bash scripts/scan-core.sh "$GITHUB_WORKSPACE"
