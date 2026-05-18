@@ -22,7 +22,8 @@ while IFS=$'\t' read -r s t mode; do
     -e "s/${_EMAIL_PAT}/USER_EMAIL/g" \
     -e "s/(${_NAMES})/PLACEHOLDER/g" \
     -e "s#${_PATH_PAT}#\${PERSONAL_OS_ROOT}#g" \
-    -e 's/5001[12]/$DB_PORT/g' \
+    -e 's/50011/$POSTGRES_PORT/g' \
+    -e 's/50012/$QDRANT_PORT/g' \
     -e "s/${_PROJ_LABEL}/PROJECT_LABEL/g" \
     -e "s/${_PROJ_LABEL2}/\"PROJECT_LABEL\"/g" \
     -e 's/Astrology-Valut/PERSONAL_VAULT/g' \

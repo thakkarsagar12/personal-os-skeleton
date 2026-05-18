@@ -37,7 +37,7 @@ _model = None
 _qdrant = None
 
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
-QDRANT_PORT = int(os.getenv("QDRANT_HTTP_PORT", "$DB_PORT"))
+QDRANT_PORT = int(os.getenv("QDRANT_HTTP_PORT", "$QDRANT_PORT"))
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PENDING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pending")
@@ -84,7 +84,7 @@ def get_conn():
         user=os.getenv("PGUSER", "postgres"),
         password=os.getenv("PGPASSWORD", "postgres"),
         host=os.getenv("PGHOST", "localhost"),
-        port=os.getenv("PGPORT", "$DB_PORT"),
+        port=os.getenv("PGPORT", "$POSTGRES_PORT"),
     )
 
 # ── Qdrant helpers ─────────────────────────────────────────

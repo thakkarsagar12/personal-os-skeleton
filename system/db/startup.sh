@@ -31,7 +31,7 @@ fi
 # --- Check Postgres ---
 pg_status=$(docker inspect --format='{{.State.Health.Status}}' pos_postgres 2>/dev/null)
 if [ "$pg_status" = "healthy" ]; then
-    echo -e "${GREEN}[OK] Postgres (port $DB_PORT) — healthy${NC}"
+    echo -e "${GREEN}[OK] Postgres (port $POSTGRES_PORT) — healthy${NC}"
 else
     echo -e "${YELLOW}[STARTING] Postgres...${NC}"
     cd "$PROJECT_DIR" && docker compose up -d postgres
@@ -54,7 +54,7 @@ fi
 # --- Check Qdrant ---
 qd_status=$(docker inspect --format='{{.State.Health.Status}}' pos_qdrant 2>/dev/null)
 if [ "$qd_status" = "healthy" ]; then
-    echo -e "${GREEN}[OK] Qdrant (port $DB_PORT) — healthy${NC}"
+    echo -e "${GREEN}[OK] Qdrant (port $QDRANT_PORT) — healthy${NC}"
 else
     echo -e "${YELLOW}[STARTING] Qdrant...${NC}"
     cd "$PROJECT_DIR" && docker compose up -d qdrant
@@ -96,16 +96,16 @@ fi
 # --- Real host->container TCP check (catches port-binding/proxy failures
 #     that docker-exec checks above cannot see, e.g. IDE proxy on the port) ---
 if [ "$status_ok" = true ]; then
-    if python3 -c "import socket,sys; socket.create_connection(('localhost',$DB_PORT),3).close()" 2>/dev/null; then
-        echo -e "${GREEN}[OK] Postgres reachable from host (localhost:$DB_PORT)${NC}"
+    if python3 -c "import socket,sys; socket.create_connection(('localhost',$POSTGRES_PORT),3).close()" 2>/dev/null; then
+        echo -e "${GREEN}[OK] Postgres reachable from host (localhost:$POSTGRES_PORT)${NC}"
     else
-        echo -e "${RED}[FAIL] Postgres NOT reachable on host localhost:$DB_PORT — container healthy but host port unbound (proxy/IDE conflict?). memory.py will fail.${NC}"
+        echo -e "${RED}[FAIL] Postgres NOT reachable on host localhost:$POSTGRES_PORT — container healthy but host port unbound (proxy/IDE conflict?). memory.py will fail.${NC}"
         status_ok=false
     fi
-    if curl -sf -m 3 http://localhost:$DB_PORT/healthz >/dev/null 2>&1; then
-        echo -e "${GREEN}[OK] Qdrant reachable from host (localhost:$DB_PORT)${NC}"
+    if curl -sf -m 3 http://localhost:$QDRANT_PORT/healthz >/dev/null 2>&1; then
+        echo -e "${GREEN}[OK] Qdrant reachable from host (localhost:$QDRANT_PORT)${NC}"
     else
-        echo -e "${RED}[FAIL] Qdrant NOT reachable on host localhost:$DB_PORT — semantic layer will fail.${NC}"
+        echo -e "${RED}[FAIL] Qdrant NOT reachable on host localhost:$QDRANT_PORT — semantic layer will fail.${NC}"
         status_ok=false
     fi
 fi
