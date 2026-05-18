@@ -1,3 +1,5 @@
+# Denylisted path globs — any matching path under the scanned tree fails the scan.
+# Lines starting with # are ignored; one path glob per line.
 docker-data/
 memory/
 .env

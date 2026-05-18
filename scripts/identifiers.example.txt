@@ -1,9 +1,10 @@
-# One regex per line. Lines starting with # ignored.
+# One POSIX ERE regex per line (matched by grep -E). Lines starting with # ignored.
 # Replace these with YOUR identifiers before sharing.
+# Note: use POSIX ERE only — no \b, \d, or other PCRE escapes (BSD grep ignores them silently).
 Sagar
 Prez
 Bhumi
 NeoSoft
 thakkarsagar12@gmail\.com
-\b\d{10}\b
+[0-9]{10}
 ADHD|BPD
