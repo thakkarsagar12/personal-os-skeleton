@@ -12,7 +12,14 @@ rc=0
 # 1. Denylisted paths present?
 while IFS= read -r pat; do
   case "$pat" in ''|'#'*) continue;; esac
-  hits="$(find "$ROOT" -path "*/${pat%/}*" 2>/dev/null)"
+  # Simple bare names (no / and no *) → exact basename match to avoid
+  # substring false-positives (e.g. ".env" must not flag ".env.example").
+  # Slash-suffixed dirs and glob patterns use the original substring path match.
+  if [[ "$pat" != */* ]] && [[ "$pat" != *\** ]]; then
+    hits="$(find "$ROOT" -name "$pat" 2>/dev/null)"
+  else
+    hits="$(find "$ROOT" -path "*/${pat%/}*" 2>/dev/null)"
+  fi
   if [ -n "$hits" ]; then
     echo "DENYLIST HIT: $pat"
     printf '%s\n' "$hits" | sed 's/^/  /'

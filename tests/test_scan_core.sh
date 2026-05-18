@@ -38,6 +38,15 @@ mkdir -p "$TMP/broad/sub"
 echo "FIXTUREPII" > "$TMP/broad/sub/identifiers.txt"
 assert_err bash "$SC" "$TMP/broad" "$IDS"
 
+# Regression: denylist bare-name ".env" must NOT match ".env.example"
+# (exact basename match required — substring match is a false-positive).
+mkdir -p "$TMP/envex"; echo "POSTGRES_PORT=5432" > "$TMP/envex/.env.example"
+assert_ok bash "$SC" "$TMP/envex" "$IDS"
+
+# Regression: denylist bare-name ".env" MUST match a real ".env" file.
+mkdir -p "$TMP/envreal"; echo "SECRET=hunter2" > "$TMP/envreal/.env"
+assert_err bash "$SC" "$TMP/envreal" "$IDS"
+
 # Cleanup: remove fixture artifacts (runtime files hold the full synthetic
 # 10-digit string; leaving them on disk would trip a later whole-repo scan).
 rm -rf "$TMP"
