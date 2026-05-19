@@ -1,0 +1,177 @@
+---
+name: init-os
+description: "Conversational first-run personalizer — interviews the user one question at a time, collects their name, role, north-star goal, pillars, domains, study tracks, and rule-module preferences, then writes all placeholder values across the skeleton and enables chosen rule modules."
+---
+
+# `/init-os` — First-Run Personalizer
+
+## Purpose
+
+`/init-os` transforms a freshly cloned Personal OS skeleton into a fully configured,
+personal second-brain system. It works through a short interview — **one question at a time**
+— and then performs all writes automatically. No manual editing of config files required.
+
+---
+
+## Invocation
+
+```
+/init-os
+```
+
+No arguments. Run this once, right after cloning the skeleton into your project directory.
+
+---
+
+## Interview Protocol
+
+The skill uses a **conversational, one question at a time** approach. It never presents a
+form or a list of prompts. Each question is asked individually, the answer is acknowledged,
+and only then does the next question appear.
+
+### Question Sequence
+
+1. **Name** — "What is your name? (This appears in CLAUDE.md as `{{USER_NAME}}`)"
+2. **Role / what you do** — "How would you describe what you do? (becomes `{{USER_ROLE}}`)"
+3. **Project name** — "What would you like to call this Personal OS instance? (becomes `{{PROJECT_NAME}}`)"
+4. **North-star goal** — "In one sentence, what is your north-star goal — the single outcome
+   you are building toward? (becomes `{{NORTH_STAR}}`)"
+5. **The 5 pillars** — One at a time: "Name Pillar 1 of 5 — the first major dimension of your
+   goal. (becomes `{{PILLAR_1}}`)" … repeated for `{{PILLAR_2}}` through `{{PILLAR_5}}`.
+6. **Active domains** — "Which domains do you want to activate? Default is `ops`, `brain`,
+   `study`. Reply with a comma-separated list from: `ops`, `brain`, `social`, `career`,
+   `family`, `study`. Or press Enter to accept the default."
+7. **Study tracks** (only if `study` was chosen) — "Which study tracks do you want?
+   Available: `ai`, `cloud`, `maths`, `ds-algo`, `cyber-security`. Each track creates a
+   copy of `study/roadmap.template.md` with `{{TRACK_NAME}}` substituted. List them
+   comma-separated, or press Enter to skip."
+8. **Routine preferences** — "Do you prefer a daily morning briefing (`/morning`) and evening
+   review (`/evening`)? (yes / no)"
+9. **Rule modules** — For each module listed in `system/rules.md` Module Index, ask one at
+   a time: "Enable `elimination` rule? Caps weekly active priorities; overflows to backlog.
+   (yes / no)" … repeat for `wellbeing-calibrator`, `spaced-repetition`, `date-awareness`.
+10. **Privacy identifiers** — Remind the user: "Before finishing, copy
+    `scripts/identifiers.example.txt` → `scripts/identifiers.txt` and add your own personal
+    identifiers (name variants, email, phone). This keeps `bash scripts/scan-core.sh .`
+    clean for your data."
+
+---
+
+## Write-List (performed after interview completes)
+
+Once all answers are collected the skill performs the following writes in order.
+All substitutions are exact string replacements — no surrounding text is changed.
+
+### 1. `CLAUDE.md`
+
+Replace every occurrence of:
+- `{{PROJECT_NAME}}` → user's project name
+- `{{USER_NAME}}` → user's name
+- `{{USER_ROLE}}` → user's role
+- `{{NORTH_STAR}}` → user's north-star goal
+- `{{PILLAR_1}}` … `{{PILLAR_5}}` → user's pillar labels
+
+### 2. `system/goal-compass.md`
+
+Replace:
+- `{{USER_NAME}}`, `{{NORTH_STAR}}`, `{{PILLAR_1}}` … `{{PILLAR_5}}`
+
+### 3. `system/active-context.md`
+
+Replace:
+- `{{USER_NAME}}`, `{{PROJECT_NAME}}`
+- Set the active domains to exactly those the user chose (replace the `{{DOMAIN_NAME}}`
+  placeholder row with real domain entries, one per row).
+
+### 4. Active domain `_index.md` files
+
+For each activated domain (e.g. `daily-ops/_index.md`, `second-brain/_index.md`, etc.):
+- Replace `{{USER_NAME}}` and `{{DOMAIN_NAME}}` with the actual values.
+
+### 5. Study track roadmaps (if study enabled)
+
+For each track the user chose:
+- Copy `study/roadmap.template.md` → `study/{track}/roadmap.md`
+- In the copy, replace `{{TRACK_NAME}}` with the track name (e.g. `ai`, `cloud`).
+
+### 6. Rule module enabling
+
+For each rule module the user said "yes" to, open `system/rules.md` and update the
+**Module Index** table: change the `Enabled` cell for that module's row from
+`disabled by default` to `enabled`.
+
+This is the canonical mechanism — there is no `rules/active/` directory. The Module Index
+table in `system/rules.md` is the single source of truth for which rule modules are active.
+
+### 7. `profile.md` (new file, repo root)
+
+Write a new file `profile.md` with:
+
+```markdown
+# Profile
+
+**Name:** {{USER_NAME}}
+**Role:** {{USER_ROLE}}
+**North Star:** {{NORTH_STAR}}
+
+## Pillars
+1. {{PILLAR_1}}
+2. {{PILLAR_2}}
+3. {{PILLAR_3}}
+4. {{PILLAR_4}}
+5. {{PILLAR_5}}
+
+## Active Domains
+{{DOMAIN_NAME}}
+
+## Study Tracks
+{{TRACK_NAME}}
+
+_Generated by /init-os. Edit freely._
+```
+
+(Replace all placeholders with real values collected during the interview.)
+
+---
+
+## Privacy Reminder
+
+After running `/init-os`, the user should:
+
+1. Copy `scripts/identifiers.example.txt` → `scripts/identifiers.txt`
+2. Add their own name variants, email addresses, and phone numbers to `scripts/identifiers.txt`
+3. Run `bash scripts/scan-core.sh .` — it must exit 0 (`scan-core: CLEAN`) before committing
+
+This ensures the PII scanner catches any accidental personal data in future commits.
+
+---
+
+## Output After Completion
+
+```
+## /init-os complete
+
+Profile written to profile.md.
+Placeholders substituted across: CLAUDE.md, system/goal-compass.md,
+  system/active-context.md, domain _index files, study roadmaps.
+Rule modules enabled: [list]
+
+Next steps:
+1. Copy scripts/identifiers.example.txt → scripts/identifiers.txt
+   and add your identifiers (for scan-core privacy checks).
+2. Run: bash scripts/scan-core.sh .
+3. Run: bash tests/run.sh
+4. Commit: git add -A && git commit -m "init: personalise OS for {{USER_NAME}}"
+```
+
+---
+
+## Constraints
+
+- **One question at a time.** Never present multiple prompts in a single message.
+- All instructional content in this skill is generic — no personal data, real names, email
+  addresses, phone numbers, or organisation names should appear here.
+- The skill writes only to the files listed in the Write-List above. It does not read or
+  modify any file outside that list.
+- If the user skips a question (blank answer), leave the corresponding placeholder unchanged
+  so it remains visible as an unfilled token — do not substitute an empty string.
