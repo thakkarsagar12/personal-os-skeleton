@@ -59,7 +59,7 @@ Config: `system/active-context.md`
 
 **North Star:** `{{NORTH_STAR}}`
 
-**Pillars:** `{{PILLARS}}`
+**Pillars:** `{{PILLAR_1}}` · `{{PILLAR_2}}` · `{{PILLAR_3}}` · `{{PILLAR_4}}` · `{{PILLAR_5}}`
 
 Morning: "Which pillar am I pushing today?" Evening: "Did I move the needle?"
 

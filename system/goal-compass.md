@@ -83,4 +83,4 @@ Add your own milestones below. Use `[ ]` for open, `[x]` for complete.
 
 ---
 
-*Template file — replace all `{{PLACEHOLDER}}` values during `/init-os`.*
+*Template file — `/init-os` substitutes the double-brace placeholder tokens (e.g. USER_NAME, NORTH_STAR, PILLAR_1..PILLAR_5) with your values.*
