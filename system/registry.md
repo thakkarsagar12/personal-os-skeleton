@@ -125,6 +125,7 @@ Skills live in `.claude/skills/`.
 | `/focus` | `.claude/skills/focus/` |
 | `/backlinks` | `.claude/skills/backlinks/` |
 | `/lint` | `.claude/skills/lint/` |
+| `/init-os` | `.claude/skills/init-os/` (one-time personalizer — setup-only, not daily-use) |
 
 ---
 
@@ -132,8 +133,8 @@ Skills live in `.claude/skills/`.
 
 | Component | Role | Config |
 |-----------|------|--------|
-| Postgres | Relational conversation store | `$PGHOST:$PGPORT`, db `personal_os` |
-| Qdrant | Vector embeddings (semantic search) | `$QDRANT_HOST:$QDRANT_HTTP_PORT` |
+| Postgres | Relational conversation store | `$PGHOST:$POSTGRES_PORT`, db `personal_os` |
+| Qdrant | Vector embeddings (semantic search) | `$QDRANT_HOST:$QDRANT_PORT` |
 | docker-compose.yml | Brings up both containers | project root |
 | claude-mem | Live write-ahead capture layer | `$CLAUDE_MEM_DB` (see claude-mem docs) |
 | bridge.py | Nightly sync: claude-mem → Postgres/Qdrant | cron + session Stop hook |
