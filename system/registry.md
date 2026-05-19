@@ -134,7 +134,7 @@ Skills live in `.claude/skills/`.
 | Postgres | Relational conversation store | `$PGHOST:$PGPORT`, db `personal_os` |
 | Qdrant | Vector embeddings (semantic search) | `$QDRANT_HOST:$QDRANT_HTTP_PORT` |
 | docker-compose.yml | Brings up both containers | project root |
-| claude-mem | Live write-ahead capture layer | `~/.claude-mem/claude-mem.db` |
+| claude-mem | Live write-ahead capture layer | `$CLAUDE_MEM_DB` (see claude-mem docs) |
 | bridge.py | Nightly sync: claude-mem → Postgres/Qdrant | cron + session Stop hook |
 
 ---

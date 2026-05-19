@@ -87,7 +87,7 @@ Card format:
 **Difficulty:** easy / medium / hard
 ```
 
-During `/revise`, use existing cards — do not generate new questions.
+During a revision session, use existing cards — do not generate new questions.
 After a review, update difficulty (correct → downgrade one level; incorrect → upgrade one level).
 
 ---
@@ -104,7 +104,7 @@ not backward.
 
 ## Triggering a Session
 
-Use `/revise` to start an on-demand revision session against the active queue.
+Trigger a revision session against the active queue when ready.
 
 ---
 

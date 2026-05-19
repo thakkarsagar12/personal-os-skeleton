@@ -32,9 +32,9 @@ The system has 3 operational domains:
 
 | Lead | Domain | Specialist Agents |
 |------|--------|-------------------|
-| `daily-ops-lead` | Tasks, habits, routines, schedule | task, routine, review, wellbeing |
+| `daily-ops-lead` | Tasks, habits, routines, schedule | task, routine, review |
 | `second-brain-lead` | Capture, notes, ideas, research | capture, organizer |
-| `study-lead` | Learning tracks, progress tracking | study, revision |
+| `study-lead` | Learning tracks, progress tracking | study |
 
 **How it works:** master-orchestrator → 1-2 domain leads (parallel) → specialist agents → response.
 
@@ -75,12 +75,9 @@ Config: `system/goal-compass.md`
 | `/capture [text]` | Quick capture to `second-brain/inbox/` |
 | `/task [...]` | Task management — add, list, done, next, blocked |
 | `/focus [domains/combo]` | Activate domains |
-| `/revise` | On-demand spaced repetition session |
 | `/reload` | Full system audit — gaps, updates, registry sync |
 | `/lint` | Knowledge base audit — orphans, broken links, stale dates |
 | `/backlinks [entity]` | Show files referencing an entity |
-| `/search-tag [tag]` | Search files by YAML frontmatter tag |
-| `/dashboard` | KPI dashboard — system-wide status |
 | `/init-os` | First-run personalisation — fills `{{...}}` placeholders, enables rule modules |
 | `/incognito [on/off/status]` | Toggle session privacy |
 
@@ -96,10 +93,10 @@ Rule bodies live in `system/rules/`. The table below lists available modules; al
 |-------------|------|------------------------|
 | `elimination.md` | Elimination Rule | Enforces max-priority cap; overflow → backlog |
 | `wellbeing-calibrator.md` | Wellbeing Calibrator | Adapts task load to energy/stress level |
-| `spaced-repetition.md` | Spaced Repetition | State-gated revision schedule for study cards |
+| `spaced-repetition.md` | Spaced Repetition | Standard interval revision schedule for study topics |
 | `date-awareness.md` | Date & Time Awareness | Checks current date each session; never carries stale dates |
 
-To activate a module: run `/init-os` or manually move it to `system/rules/active/`.
+To activate a module: set it to `enabled` in the `system/rules.md` table (or via `/init-os`).
 
 ## Communication Rules
 
@@ -117,7 +114,7 @@ Full architecture, CLI, and protocols: `system/memory-db.md`
 
 **Start Protocol (each conversation):**
 1. `bash system/db/startup.sh` — health-check infra (Postgres / Qdrant)
-2. Read `system/behavior-log.md` — calibrate to confirmed patterns
+2. Read `system/behavior-log.md` if present — calibrate to confirmed patterns
 
 **Retrieval before file-reading:**
 - For exploratory questions, call `python system/db/repo_index.py search "query"` first — returns top-5 matching sections. Read ONLY those.
