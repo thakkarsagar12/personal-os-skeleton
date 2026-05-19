@@ -76,9 +76,9 @@ See [`PRIVACY.md`](PRIVACY.md) for the full discipline.
 | `/capture [text]` | Quick-capture to `second-brain/inbox/` |
 | `/task [...]` | Task management — add, list, done, next |
 | `/focus [domain]` | Activate one or more domains |
-| `/revise` | Spaced-repetition session from study notes |
+| `/backlinks [entity]` | Show files referencing an entity |
 | `/lint` | Knowledge-base audit — orphans, stale dates |
-| `/dashboard` | System-wide KPI view |
+| `/weekly-review` | Weekly summary — wins, misses, patterns |
 
 ---
 

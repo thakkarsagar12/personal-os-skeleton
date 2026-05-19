@@ -28,7 +28,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
-QDRANT_PORT = int(os.getenv("QDRANT_HTTP_PORT", "$QDRANT_PORT"))
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", "6333"))
 COLLECTION = "personal_os_repo"
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent.parent

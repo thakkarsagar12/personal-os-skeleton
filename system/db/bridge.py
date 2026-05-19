@@ -32,7 +32,7 @@ import memory as mem  # reuse get_conn / embed / _upsert_vector / COLLECTIONS
 CLAUDE_MEM_DB = os.path.expanduser(
     os.getenv("CLAUDE_MEM_DB", "~/.claude-mem/claude-mem.db")
 )
-PROJECTS = ("PROJECT_LABEL", "PROJECT_LABEL")  # claude-mem project labels for this repo
+PROJECTS = ("PROJECT_LABEL", "PROJECT_USER")  # claude-mem project labels for this repo
 SOURCE = "claude-mem"
 
 _REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

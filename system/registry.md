@@ -67,8 +67,9 @@ Skills live in `.claude/skills/`.
 | `focus/` | Activate domain subsets |
 | `backlinks/` | Show files referencing an entity |
 | `lint/` | Knowledge base audit — orphans, broken links, stale dates |
+| `init-os/` | Conversational personalizer — fills in your name, domains, goal |
 
-**Count:** 8 skills.
+**Count:** 9 skills.
 
 ---
 
@@ -150,4 +151,4 @@ populate with your own real names/emails/phones before sharing the skeleton).
 
 ---
 
-*Skeleton registry — reflects minimal core (3 domains, 10 agents, 8 skills, 4 rule modules).*
+*Skeleton registry — reflects minimal core (3 domains, 10 agents, 9 skills, 4 rule modules).*
