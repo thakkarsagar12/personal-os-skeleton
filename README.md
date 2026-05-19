@@ -1,6 +1,37 @@
-# Personal OS — Claude Code Skeleton
+<p align="center">
+  <img src="docs/assets/social-preview.svg" alt="Personal OS Skeleton" width="100%">
+</p>
 
-A privacy-safe, forkable scaffold for building a personal operating system on top of Claude Code. This is a **skeleton, not a filled system** — it ships zero personal data. You supply the content; Claude Code supplies the intelligence.
+<h1 align="center">Personal OS Skeleton</h1>
+
+<p align="center">
+  A privacy-safe, forkable <strong>Personal OS</strong> for Claude Code — your life as a multi-agent markdown system.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/license-MIT-blue?style=flat" alt="License: MIT">
+  <img src="https://img.shields.io/badge/built%20with-Claude%20Code-orange?style=flat" alt="Built with Claude Code">
+  <img src="https://img.shields.io/badge/privacy-scan--core%20%2B%20pre--push%20%2B%20CI-green?style=flat" alt="Privacy: scan-core + pre-push + CI">
+  <img src="https://img.shields.io/badge/status-forkable%20skeleton-lightgrey?style=flat" alt="Status: forkable skeleton">
+</p>
+
+---
+
+## Why this exists
+
+Most personal-knowledge systems leak data when you share or publish them. This skeleton ships with a **layered privacy defence** — a regex scanner (`scan-core.sh`), a fail-closed pre-push hook, and an opt-in CI workflow — that an independent review stress-tested against the maintainer's own data. The review caught gaps that self-checks missed: binary files skipped by naive scanners, a fail-open code path, and a name embedded in a commit template. All three are now gated. The result is a repo you can fork, fill, and push without worrying about what leaks.
+
+---
+
+## Feature overview
+
+| Capability | What you get |
+|------------|-------------|
+| **Semantic memory** | Postgres + Qdrant semantic recall — conversations indexed, searchable by meaning |
+| **Multi-agent orchestrator** | Master orchestrator → domain leads → specialists; mirrors how humans delegate |
+| **Focus modes** | `/focus [domains/combo]` activates one or more domains at once (`decide`, `deep-work`, `full`, …) |
+| **`make init` + `/init-os`** | One command to hook up git and one slash command to personalise domains, goals, and rules |
+| **Privacy shipped** | Scanner + fail-closed pre-push hook + opt-in CI workflow — three independent gates |
 
 ---
 
