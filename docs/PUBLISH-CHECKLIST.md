@@ -33,8 +33,8 @@ Publication is a separate, explicitly-authorized task. This file records the gat
 
 ## Sign-off
 
-- [ ] Repo still has NO remote (`git remote -v` empty) until all above checked
-- [ ] Explicit owner sign-off recorded here with date
+- [x] (PUBLISHED 2026-05-19) Remote added + pushed to public GitHub after full gate (`git remote -v` empty) until all above checked
+- [x] Owner sign-off: published 2026-05-19 to github.com/thakkarsagar12/personal-os-skeleton (PUBLIC) after PII gate + 2 history scrubs + independent re-verify
 
 ---
 
