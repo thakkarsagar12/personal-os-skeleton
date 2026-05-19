@@ -26,7 +26,7 @@ Publication is a separate, explicitly-authorized task. This file records the gat
 ## Git history / metadata (scan-core does NOT cover this)
 
 - [ ] Author/committer identity scrubbed: `git log --format='%an <%ae>%n%cn <%ce>' | sort -u` shows ONLY a neutral identity. **NOTE: early build commits carry a personal email — a history rewrite (e.g. fresh squashed root commit, or `git filter-repo --mailmap`) is REQUIRED before any remote is added.**
-- [ ] `git log -p | grep -niE 'sagar|prez|bhumi|neosoft|thakkar' | head` → no personal hits in historical diffs
+- [ ] `git log -p | grep -niEf scripts/identifiers.example.txt | head` → no personal hits in historical diffs
 - [ ] Commit messages contain no personal data
 
 ---
@@ -87,7 +87,7 @@ Do NOT add a remote until one of the above is completed and re-verified.
 ### Historical diff grep — personal identifiers in file content
 
 ```
-git log -p | grep -niE 'sagar|prez|bhumi|neosoft|thakkar' | head -20
+git log -p | grep -niEf scripts/identifiers.example.txt | head -20
 ```
 
 **Result: hits present — all are expected and explained below.**
