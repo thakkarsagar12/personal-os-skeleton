@@ -1,4 +1,4 @@
-# Rename to privacy.yml to activate. Opt-in by design.
+# Active privacy gate for this repo; forks inherit it.
 name: privacy-scan
 on: [push, pull_request]
 jobs:
