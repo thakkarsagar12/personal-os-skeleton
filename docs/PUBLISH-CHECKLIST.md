@@ -19,7 +19,7 @@ Publication is a separate, explicitly-authorized task. This file records the gat
 - [ ] No `docker-data/`, `memory/`, `.env` tracked: `git ls-files | grep -E 'docker-data|memory/|\.env$'` is empty
 - [ ] `grep`-sweep tracked tree for personal identifiers (names/email/phone) → none outside `scripts/identifiers.example.txt`
 - [ ] Cross-file consistency: every agent/skill/rule-module/command/path named in `CLAUDE.md`, `system/registry.md` and `docs/` exists in the skeleton (no ghosts); placeholder tokens are exactly the canonical set
-- [ ] `LICENSE` still has literal `{{YEAR}}`/`{{USER_NAME}}` OR has been deliberately finalized
+- [x] `LICENSE` finalized — MIT, holder = `thakkarsagar12` (bare GitHub username, no email, no placeholders). *(2026-05-19)*
 
 ---
 
@@ -50,6 +50,8 @@ bash scripts/scan-core.sh .  → scan-core: CLEAN  (exit 0)
 ```
 
 **Status: PASS — gate is green.**
+
+**2026-05-19 — LICENSE finalized.** MIT license placeholder `{{YEAR}}`/`{{USER_NAME}}` replaced with `Copyright (c) 2026 thakkarsagar12` (bare GitHub username; no email form; no `@`; no `{{...}}` tokens remain). `scan-core.sh LICENSE` → CLEAN. Full tree scan → CLEAN. Tests → PASS=43 FAIL=0. Commit: `chore: finalize MIT LICENSE attribution` (neutral identity).
 
 ---
 
