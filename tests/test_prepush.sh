@@ -19,6 +19,12 @@ _CLONE="$_TMP_PP/clone"
 git init -q "$_CLONE"
 git -C "$_CLONE" config user.email "test@test.local"
 git -C "$_CLONE" config user.name "test"
+# Hermeticity: scratch repo must not depend on the user's global signing
+# setup (e.g. commit.gpgsign=true via 1Password SSH). Disable signing
+# locally so commits succeed regardless of agent state. Does NOT touch
+# global config or weaken any assertion below.
+git -C "$_CLONE" config commit.gpgsign false
+git -C "$_CLONE" config tag.gpgsign false
 
 # Copy scripts/ and .githooks/ from skeleton into the clone
 cp -R "$_SKEL_ROOT/scripts" "$_CLONE/scripts"
