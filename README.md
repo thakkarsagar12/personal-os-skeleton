@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/social-preview.svg" alt="Personal OS Skeleton" width="100%">
+  <img src="docs/assets/social-preview.png" alt="Personal OS Skeleton" width="100%">
 </p>
 
 <h1 align="center">Personal OS Skeleton</h1>
