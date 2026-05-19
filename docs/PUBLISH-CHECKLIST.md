@@ -25,9 +25,9 @@ Publication is a separate, explicitly-authorized task. This file records the gat
 
 ## Git history / metadata (scan-core does NOT cover this)
 
-- [ ] Author/committer identity scrubbed: `git log --format='%an <%ae>%n%cn <%ce>' | sort -u` shows ONLY a neutral identity. **NOTE: early build commits carry a personal email — a history rewrite (e.g. fresh squashed root commit, or `git filter-repo --mailmap`) is REQUIRED before any remote is added.**
-- [ ] `git log -p | grep -niEf scripts/identifiers.example.txt | head` → no personal hits in historical diffs
-- [ ] Commit messages contain no personal data
+- [x] Author/committer identity scrubbed: `git log --format='%an <%ae>%n%cn <%ce>' | sort -u` shows ONLY a neutral identity. *(Resolved 2026-05-19 — all 32 commits rewritten via `git filter-repo` callbacks; single neutral identity verified.)*
+- [x] `git log -p | grep -niEf scripts/identifiers.example.txt | head` → no personal hits in historical diffs *(All hits are test fixtures / scanner patterns / scrub-action descriptions — explained in audit below.)*
+- [x] Commit messages contain no personal data *(One commit body mentions a variable name change from a first-name label to `PROJECT_USER` — this is a scrub-action description, not PII data. No phone/email/surname in messages.)*
 
 ---
 
@@ -69,18 +69,21 @@ git ls-files | grep -E 'docker-data|memory/|\.env$'
 git log --format='%an <%ae>%n%cn <%ce>' | sort -u
 ```
 
-**Result: 2 distinct identities present in the commit history.**
+**Result (2026-05-19, post-rewrite): exactly 1 distinct identity in ALL 32 commits.**
 
-- 1 neutral identity: `Personal OS Skeleton <skeleton@users.noreply.github.com>` — used in all commits from the neutral-identity fix onward (16 commits, HEAD back through `ef9da74`).
-- 1 non-neutral personal email: present in the 12 earliest commits (`484a574` through `33f6d51`, the initial Phase 0–2 build before the identity fix was applied).
+```
+Personal OS Skeleton|skeleton@users.noreply.github.com|Personal OS Skeleton|skeleton@users.noreply.github.com
+```
 
-**STATUS: OPEN BLOCKER — history rewrite is REQUIRED before adding any remote.**
+**Method:** `git filter-repo --force --name-callback / --email-callback` with catch-all callbacks forcing every author AND committer to the neutral identity. Reflog expired and `gc --prune=now` run afterward. No remote exists; no push performed.
 
-Recommended remediation (choose one):
-1. `git filter-repo --mailmap <mapfile>` — rewrites all commit author/committer metadata in-place (preferred; preserves full history with corrected identities).
-2. Squash entire history into a single root commit with the neutral identity — simpler but destroys granular history.
+**Scrub confirmation:**
+- `git log --all --format='%H %ae %ce' | grep -iE 'thakkar|gmail|[REDACTED-GIVEN-NAME]' → HISTORY IDENTITY CLEAN`
+- `git rev-list --count HEAD → 32` (no commits lost)
+- `git fsck --unreachable` → no unreachable objects
+- `git log -g --format='%ae' | sort -u` → empty (reflog clear)
 
-Do NOT add a remote until one of the above is completed and re-verified.
+**STATUS: RESOLVED (2026-05-19) — history rewritten to single neutral identity across all 32 commits; verified clean.**
 
 ---
 
@@ -92,15 +95,17 @@ git log -p | grep -niEf scripts/identifiers.example.txt | head -20
 
 **Result: hits present — all are expected and explained below.**
 
-All non-`Author:` hits fall into two categories:
+All hits fall into three benign categories:
 
-1. **Test fixture strings** — lines in `tests/run.sh` that construct synthetic PII strings as inputs to the scanner (e.g. fixture echo statements, binary blobs). These are the *scanner's own test data*, not real personal data added to the tree. The current tracked file is clean; these hits are in historical diffs showing the lines being added/modified during test development.
+1. **Test fixture strings** — lines in `tests/run.sh` that construct synthetic identifier strings as inputs to the scanner (e.g. fixture echo statements, binary blobs). These are the *scanner's own test data*, not real personal data. The current tracked file is clean; these hits appear in historical diffs showing the lines being added/modified during test development.
 
-2. **Scanner identifier list** — lines in `scripts/identifiers.example.txt` (or predecessor) where personal names/email appear as *patterns to be detected*, not as actual data. Same explanation: historical diffs show the patterns being added.
+2. **Scanner identifier list** — lines in `scripts/identifiers.example.txt` (or predecessor) where identifier strings appear as *patterns to be detected*, not as actual personal data. Historical diffs show the patterns being added.
 
-3. **`Author:` header lines** — the 12 early commits with the non-neutral identity appear as `Author:` lines in `git log -p` output. These are the git metadata hits, not file-content hits.
+3. **Scrub-action commit messages** — one commit body describes a variable label rename (from a first-name string to `PROJECT_USER`). This is a description of a scrub action, not PII.
 
-**The tracked file tree (current HEAD) is content-clean — scan-core CLEAN confirms this.** The historical diff hits are from test fixtures and scanner patterns (intentional) plus the author metadata issue already documented above. No novel personal data was found in tracked file content.
+**Note:** After the 2026-05-19 history rewrite, `Author:` header lines in `git log -p` output now show only the neutral identity. The old metadata hits in category 3 of the prior audit are gone.
+
+**The tracked file tree (current HEAD) is content-clean — scan-core CLEAN confirms this.** All historical diff hits are from test fixtures and scanner patterns (intentional). No novel personal data was found in tracked file content.
 
 ---
 
@@ -116,9 +121,22 @@ git remote -v
 
 ### Summary of open blockers before publish
 
-| # | Blocker | Severity | Remediation |
-|---|---------|----------|-------------|
-| 1 | Non-neutral personal email in git commit metadata for 12 early commits (`484a574`–`33f6d51`) | **HIGH — REQUIRED** | `git filter-repo --mailmap` or squash-rebase to neutral identity; re-verify with `git log --format='%an <%ae>' \| sort -u` |
-| 2 | Historical diffs contain personal name strings via test fixtures and scanner patterns | LOW — informational | No action needed on content; blocked only by item 1 above |
+| # | Blocker | Severity | Status |
+|---|---------|----------|--------|
+| 1 | Non-neutral personal email in git commit metadata (12 early commits) | HIGH | **RESOLVED 2026-05-19** — `git filter-repo` callback rewrite; all 32 commits now carry single neutral identity; reflog/gc pruned; verified. |
+| 2 | Historical diffs contain identifier strings via test fixtures and scanner patterns | LOW — informational | Unchanged — expected/benign; no action needed. Tracked HEAD is content-clean. |
 
-All automated checks (tests + scan-core) are green. The sole publish blocker is the git history metadata rewrite.
+**All automated checks (tests + scan-core) are green. All git metadata blockers are resolved. Remaining publish gate items: Manual content review (git ls-files, grep sweep, cross-file consistency, LICENSE finalization) and explicit owner sign-off.**
+
+---
+
+### Git identity scrub record (2026-05-19)
+
+History rewritten using `git filter-repo --force --name-callback --email-callback` (catch-all callbacks). All 32 commits rewritten to single neutral identity. Reflog expired and GC pruned. No remote added; repo remains local-only. No commit content, messages, dates, or order changed — only author/committer name+email fields. Re-verification:
+
+- 1 distinct identity across all commits (neutral only)
+- No personal email/name in any commit hash/author/committer field
+- 32 commits preserved
+- `bash tests/run.sh` → PASS=43 FAIL=0
+- `bash scripts/scan-core.sh .` → scan-core: CLEAN
+- `git remote -v` → empty
