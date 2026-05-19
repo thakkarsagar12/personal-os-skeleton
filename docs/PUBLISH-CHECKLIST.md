@@ -69,7 +69,7 @@ git ls-files | grep -E 'docker-data|memory/|\.env$'
 git log --format='%an <%ae>%n%cn <%ce>' | sort -u
 ```
 
-**Result (2026-05-19, post-rewrite): exactly 1 distinct identity in ALL 32 commits.**
+**Result (2026-05-19, post-rewrite): exactly 1 distinct identity across ALL commits (full history).**
 
 ```
 Personal OS Skeleton|skeleton@users.noreply.github.com|Personal OS Skeleton|skeleton@users.noreply.github.com
@@ -78,12 +78,12 @@ Personal OS Skeleton|skeleton@users.noreply.github.com|Personal OS Skeleton|skel
 **Method:** `git filter-repo --force --name-callback / --email-callback` with catch-all callbacks forcing every author AND committer to the neutral identity. Reflog expired and `gc --prune=now` run afterward. No remote exists; no push performed.
 
 **Scrub confirmation:**
-- `git log --all --format='%H %ae %ce' | grep -iE 'thakkar|gmail|[REDACTED-GIVEN-NAME]' → HISTORY IDENTITY CLEAN`
-- `git rev-list --count HEAD → 32` (no commits lost)
+- `git log --all --format='%H %ae %ce' | grep -niEf scripts/identifiers.example.txt → HISTORY IDENTITY CLEAN`
+- `git rev-list --count HEAD` matches full history; no commits lost across either scrub pass
 - `git fsck --unreachable` → no unreachable objects
 - `git log -g --format='%ae' | sort -u` → empty (reflog clear)
 
-**STATUS: RESOLVED (2026-05-19) — history rewritten to single neutral identity across all 32 commits; verified clean.**
+**STATUS: RESOLVED (2026-05-19) — history rewritten to single neutral identity across all commits (full history); verified clean.**
 
 ---
 
