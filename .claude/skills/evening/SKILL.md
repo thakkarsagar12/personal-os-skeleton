@@ -1,5 +1,5 @@
 ---
-name: "Evening Review"
+name: evening
 description: "End-of-day review — surfaces done/undone tasks, prompts a brief energy/reflection note, and updates today's file. Use each evening to close the day, capture any loose threads, and prepare tomorrow's starting point."
 ---
 

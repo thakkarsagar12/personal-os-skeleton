@@ -1,5 +1,5 @@
 ---
-name: "Backlinks"
+name: backlinks
 description: "Finds all files in the knowledge base that reference a given entity via [[wiki-link]] syntax. Use to explore what the KB knows about a topic, person, project, or concept and how it is connected."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "Quick Capture"
+name: capture
 description: "Instantly saves a note, idea, link, or thought to second-brain/inbox/ with a timestamp. Zero friction — do not organise, just capture. Use any time you have something to save before it's lost."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "KB Lint"
+name: lint
 description: "Audits the markdown knowledge base for orphaned files, broken [[wiki-links]], stale dates, and structural issues. Classifies files as wiki nodes, log entries, or state files. Produces an actionable report. Use periodically to keep the KB healthy."
 ---
 

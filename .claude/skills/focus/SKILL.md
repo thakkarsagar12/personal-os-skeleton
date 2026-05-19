@@ -1,5 +1,5 @@
 ---
-name: "Focus Mode"
+name: focus
 description: "Activates one or more domain contexts simultaneously so agents operate within those domains only. Accepts domain keys (ops, brain, study) or named combos (plan-week, deep-work, review, full). Use to scope the session before starting domain-specific work."
 ---
 

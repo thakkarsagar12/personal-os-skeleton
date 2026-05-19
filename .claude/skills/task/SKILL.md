@@ -1,5 +1,5 @@
 ---
-name: "Task Management"
+name: task
 description: "Add, list, complete, and navigate tasks in daily-ops/tasks/. Supports subcommands: add, list, done, next, start, blocked, progress, backlog. Use for any task CRUD operation on the daily-ops task files."
 ---
 

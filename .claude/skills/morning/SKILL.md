@@ -1,5 +1,5 @@
 ---
-name: "Morning Briefing"
+name: morning
 description: "Daily morning briefing — surfaces today's tasks, calendar events, and habits checklist. Optionally integrates with Gmail and Google Calendar MCPs when configured. Use at the start of each day to orient, prioritise, and commit to the day's work."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "Weekly Review"
+name: weekly-review
 description: "End-of-week review — surfaces wins, misses, patterns, and enforces the priority cap (max 3 priorities, overflow to backlog). Produces a dated summary file. Use every week to close the cycle, recalibrate focus, and set next-week intentions."
 ---
 
